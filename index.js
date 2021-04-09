@@ -1,31 +1,33 @@
-const express = require('express');
+// Look into exports/module exports:
+// * https://www.sitepoint.com/understanding-module-exports-exports-node-js/
+// * https://dev.to/iamsrujal/nodejs-express-project-structure-for-rest-api-37oasr 
+
+import express from 'express';
+import cors from 'cors';
+import env from './env.js';
+
+import routes from './routes.js';
+//import testFetch from './controllers/testFetch.js';
+
 const app = express();
-const pool = require('./pool');
 
-app.use(express.json()) // => req.body : to get access on body of json data
+// Middleware
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+// extended: true or false? -> https://stackoverflow.com/questions/29960764/what-does-extended-mean-in-express-4-0
+app.use(express.json());
 
-app.get('/api/v1/chart/getRegionDeaths/:country/:adm_area_1', async (req, res) => {
-    try {
-        const { country, adm_area_1 } = req.params;
-        const queryText = `SELECT "epidemiology"."date", "epidemiology"."country", "epidemiology"."adm_area_1", AVG("epidemiology"."dead") AS "dead"
-        FROM "splitgraph/oxcovid19:latest"."epidemiology"
-        JOIN "splitgraph/oxcovid19:latest"."administrative_division"
-        ON "administrative_division"."country" = "epidemiology"."country"
-        WHERE "epidemiology"."country" = '$1::text'
-        AND "epidemiology"."adm_area_1" = '$2::text'
-        AND "epidemiology"."date" >= '2020-02-24'
-        AND "epidemiology"."dead" IS NOT NULL
-        GROUP BY "epidemiology"."date", "epidemiology"."country", "epidemiology"."adm_area_1"
-        ORDER BY "epidemiology"."date", "epidemiology"."country", "epidemiology"."adm_area_1" ASC;`;
-        const queryValues = [ country, adm_area_1 ];
+// Routes
+app.get('/', (req, res) => { res.send(`🚀 OxCOVID-19 Dashboard Node is up and running!`) });
+app.get('/api/v1/test', (req, res) => {
+    res.json({ info: 'Node.js, Express, and Postgres API' })
+})
 
-        const r = await pool.query(queryText, queryValues);
-        res.json(r.rows[0]);
-    } catch (err) {
-        console.error(err.message)
-    }
+app.use('/api/v1', routes);
+
+
+app.listen(env.port || 8080, () => {
+    console.log(`🚀 API running on port ${env.port || 8080}.`)
 });
 
-app.listen(5000, () => {
-    console.log("server is listening on port: 5000");
-});
+export default app;

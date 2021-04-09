@@ -1,14 +1,14 @@
-require('dotenv').config()
-
-const Pool = require("pg").Pool;
+import env from './env.js';
+import pkg from 'pg';
+const { Pool } = pkg;
 
 const pool = new Pool({
-    user: process.env.PG_USER,
-    host: process.env.PG_HOST,
-    database: process.env.PG_DATABASE,
-    password: process.env.PG_PASSWORD,
-    port: process.env.PG_PORT,
-    ssl: true
-})
+    user: env.pg_user,
+    host: env.pg_host,
+    database: env.pg_database,
+    password: env.pg_password,
+    port: env.pg_port,
+    ssl: true  
+});
 
-module.exports = pool;
+export default pool;

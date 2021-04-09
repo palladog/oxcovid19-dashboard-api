@@ -3,16 +3,30 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "npm index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/palladog/oxcovid19-dashboard-api.git"
+  },
+  "author": "Milo Bengtsson",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/palladog/oxcovid19-dashboard-api/issues"
+  },
+  "homepage": "https://github.com/palladog/oxcovid19-dashboard-api#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "nodemon": "^2.0.7",
     "pg": "^8.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
