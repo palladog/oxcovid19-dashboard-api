@@ -1,4 +1,4 @@
-import pool from '../pool.js';
+import dbPool from '../dbPool.js'
 
 const testFetch = async (req, res) => {
     const query = `SELECT adm_area_1
@@ -6,10 +6,14 @@ const testFetch = async (req, res) => {
     WHERE country = 'Sweden'
     AND adm_level = 1`
 
-    pool
-        .query(query)
-        .then(res => console.log(res.rows))
-        .catch(e => console.error(e.stack))
+    try {
+        let data = await dbPool.query(query)
+        // console.log(data.rows)
+        res.send(data.rows)
+    } catch (e) {
+        console.error(e)
+        res.sendStatus(500)
+    }
 }
 
 export {
