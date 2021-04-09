@@ -1,7 +1,7 @@
 {
   "name": "oxcovid19-dashboard-api",
   "version": "1.0.0",
-  "description": "",
+  "description": " A Node application to query the OxCOVID-19 database for a dashboard run in the browser.",
   "main": "index.js",
   "type": "module",
   "scripts": {
