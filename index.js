@@ -12,7 +12,7 @@ import routes from './routes.js'
 const app = express()
 
 // Middleware
-app.use(cors());
+app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 // extended: true or false? -> https://stackoverflow.com/questions/29960764/what-does-extended-mean-in-express-4-0
 app.use(express.json())

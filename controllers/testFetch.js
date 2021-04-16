@@ -8,7 +8,7 @@ const testFetch = async (req, res) => {
 
     try {
         let data = await dbPool.query(query)
-        // console.log(data.rows)
+        console.log(data.rowCount)
         res.send(data.rows)
     } catch (e) {
         console.error(e)
