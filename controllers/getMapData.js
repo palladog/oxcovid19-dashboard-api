@@ -24,14 +24,15 @@ const getMapData = async (req, res) => {
     } = req.query
 
     let queryText = `
-        SELECT e.country, e.adm_area_1, ST_AsGeoJSON(ad.geometry) AS geometry, TO_CHAR(e.date, 'yyyy-mm-dd') AS date, 'hospitalised_icu' AS data, AVG(e.hospitalised_icu) AS value
-        FROM epidemiology e 
+        SELECT e.country, e.adm_area_1, TO_CHAR(e.date, 'yyyy-mm-dd') AS date, '${column}' AS data, AVG(e.${column}) AS value, ST_AsGeoJSON(ad.geometry) AS geometry
+        FROM ${table} e 
         JOIN administrative_division ad
         ON ad.adm_area_1 = e.adm_area_1 
         WHERE ST_Intersects(ST_MakeEnvelope(${xmin}, ${ymin}, ${xmax}, ${ymax}, ${srid}), ad.geometry)
         AND e.country = 'Sweden'
         AND ad.adm_level = '1'
-        AND e.date = '2021-03-10'
+        AND e.date = '${date}'
+        AND e.adm_area_1 NOTNULL
         GROUP BY e.date, e.country, e.adm_area_1, ad.geometry 
         ORDER BY e.date, e.country, e.adm_area_1, ad.geometry ASC
     `
