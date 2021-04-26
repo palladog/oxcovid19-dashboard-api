@@ -33,6 +33,7 @@ const getMapData = async (req, res) => {
         AND ad.adm_level = '1'
         AND e.date = '${date}'
         AND e.adm_area_1 NOTNULL
+        AND e.${column} NOTNULL
         GROUP BY e.date, e.country, e.adm_area_1, ad.geometry 
         ORDER BY e.date, e.country, e.adm_area_1, ad.geometry ASC
     `
